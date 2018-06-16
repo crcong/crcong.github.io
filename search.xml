@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[第一篇文章]]></title>
+    <title><![CDATA[Event Bus的实现]]></title>
     <url>%2F2018%2F06%2F15%2F%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%2F</url>
-    <content type="text"><![CDATA[先测试一下 aaa啊啊啊啊]]></content>
+    <content type="text"><![CDATA[Event Bus的实现 前言Event Bus 使用的范围也很广泛。 react vue 非父子组件就经常用Event Bus进行通信。 Node.js 中的很多模块都依赖Event。 实现思路 Event Bus是 发布订阅模式 的典型应用。 这里实现使用 ES6 语法。 使用方法： 12345678910// 注册一个Event Busconst emitter = new EventEmeitter()// 增加监听事件emitter.on(&apos;test&apos;, a =&gt; &#123; console.log(`on: $&#123;a&#125;`)&#125;)// 触发事件emitter.emit(&apos;test&apos;, &apos;a=10&apos;) 准备工作 创建一个 类。1231. 参数 `maxListeners` 是 监听者 最多能简单多少个事件。2. `_events` 则是 存储事件 的数据结构。 constructor(maxListeners) { this._events = new Map() this._maxListeners = (maxListeners &amp;&amp; maxListeners &gt; 0) ? maxListeners : 10}1234#### 1. 存储事件&gt; ```emitter.on(type, fn) 增加监听事件的时候，必需要储存 type 对应的事件。 type对应的 事件(fn) 可能是有多个的。 所以应该使用key: value的方式去存储。第一时间可能想到的是 对象Object。这里使用ES6新增的 Map 作为存储结构。Map用法传送门 那么 Map 的 key 就是 type，value 则是 数组，数组里面存的是需要触发的 函数 。 123456789on(type, fn) &#123; const typeFnList = this._events.get(type) if (typeFnList) &#123; if (typeFnList.length &gt;= this._maxListeners) return typeFnList.push(fn) &#125; else &#123; this._events.set(type, [fn]) &#125;&#125; 2. 触发事件 ...args)```123451. 现在上面所述的 `Map` 中找出 type 所对应的 `函数的数组` 。2. 再遍历数组，执行数组里面所有的函数。触发监听函数我们可以用 `apply` 与 `call` 两种方法，在少数参数时call的性能更好,多个参数时apply性能更好，当年Node的Event模块就在三个参数以下用call否则用 `apply`。 emit(type, …args) { const typeFnList = this._events.get(type) typeFnList &amp;&amp; typeFnList.forEach(fn =&gt; fn.apply(this, args))}1234#### 3. 移除事件&gt; ```emitter.remove(type, fn) 匿名函数不能移除，因为找不到对应的内存。 找出 type 对应的数组。 查到出对应内存的fn，并从数组删除。 123456remove(type, fn) &#123; const typeFnList = this._events.get(type) if (typeFnList &amp;&amp; typeFnList.includes(fn)) &#123; typeFnList.splice(typeFnList.findIndex(e =&gt; e === fn), 1) &#125;&#125; 总结对Event Bus的原理更加了解。 完整的demo在这]]></content>
       <categories>
         <category>前端</category>
       </categories>
       <tags>
         <tag>原生js</tag>
+        <tag>造轮子</tag>
       </tags>
   </entry>
 </search>

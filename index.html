@@ -314,7 +314,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/15/第一篇文章/" itemprop="url">第一篇文章</a></h1>
+                <a class="post-title-link" href="/2018/06/15/第一篇文章/" itemprop="url">Event Bus的实现</a></h1>
         
 
         <div class="post-meta">
@@ -388,8 +388,43 @@
       
         
           
-            <h1 id="先测试一下"><a href="#先测试一下" class="headerlink" title="先测试一下"></a>先测试一下</h1><hr>
-<h3 id="aaa"><a href="#aaa" class="headerlink" title="aaa"></a>aaa</h3><p>啊啊啊啊</p>
+            <h1 id="Event-Bus的实现"><a href="#Event-Bus的实现" class="headerlink" title="Event Bus的实现"></a>Event Bus的实现</h1><hr>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Event Bus 使用的范围也很广泛。</p>
+<ol>
+<li><code>react</code> <code>vue</code> 非父子组件就经常用Event Bus进行通信。</li>
+<li><code>Node.js</code> 中的很多模块都依赖Event。</li>
+</ol>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><blockquote>
+<p>Event Bus是 <strong>发布订阅模式</strong> 的典型应用。</p>
+</blockquote>
+<p>这里实现使用 <code>ES6</code> 语法。</p>
+<p>使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 注册一个Event Bus</span><br><span class="line">const emitter = new EventEmeitter()</span><br><span class="line"></span><br><span class="line">// 增加监听事件</span><br><span class="line">emitter.on(&apos;test&apos;, a =&gt; &#123;</span><br><span class="line">  console.log(`on: $&#123;a&#125;`)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 触发事件</span><br><span class="line">emitter.emit(&apos;test&apos;, &apos;a=10&apos;)</span><br></pre></td></tr></table></figure>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><blockquote>
+<p>创建一个 <figure class="highlight plain"><figcaption><span>类。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 参数 `maxListeners` 是 监听者 最多能简单多少个事件。</span><br><span class="line">2. `_events` 则是 存储事件 的数据结构。</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>constructor(maxListeners) {<br>  this._events = new Map()<br>  this._maxListeners = (maxListeners &amp;&amp; maxListeners &gt; 0) ? maxListeners : 10<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 1. 存储事件</span><br><span class="line"></span><br><span class="line">&gt; ```emitter.on(type, fn)</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>增加监听事件的时候，必需要储存 <code>type</code> 对应的事件。</li>
+<li>type对应的 <code>事件(fn)</code> 可能是有多个的。</li>
+</ol>
+<p>所以应该使用key: value的方式去存储。第一时间可能想到的是 <code>对象Object</code>。<br>这里使用ES6新增的 <code>Map</code> 作为存储结构。<a href="http://es6.ruanyifeng.com/#docs/set-map#Map" target="_blank" rel="noopener">Map用法传送门</a></p>
+<p>那么 <code>Map</code> 的 key 就是 <code>type</code>，value 则是 <code>数组</code>，数组里面存的是需要触发的 <code>函数</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">on(type, fn) &#123;</span><br><span class="line">  const typeFnList = this._events.get(type)</span><br><span class="line">  if (typeFnList) &#123;</span><br><span class="line">    if (typeFnList.length &gt;= this._maxListeners) return</span><br><span class="line">    typeFnList.push(fn)</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    this._events.set(type, [fn])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-触发事件"><a href="#2-触发事件" class="headerlink" title="2. 触发事件"></a>2. 触发事件</h4><blockquote>
+<figure class="highlight plain"><figcaption><span>...args)```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 现在上面所述的 `Map` 中找出 type 所对应的 `函数的数组` 。</span><br><span class="line">2. 再遍历数组，执行数组里面所有的函数。</span><br><span class="line"></span><br><span class="line">触发监听函数我们可以用 `apply` 与 `call` 两种方法，在少数参数时call的性能更好,多个参数时apply性能更好，当年Node的Event模块就在三个参数以下用call否则用 `apply`。</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>emit(type, …args) {<br>  const typeFnList = this._events.get(type)<br>  typeFnList &amp;&amp; typeFnList.forEach(fn =&gt; fn.apply(this, args))<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 3. 移除事件</span><br><span class="line"></span><br><span class="line">&gt; ```emitter.remove(type, fn)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>匿名函数不能移除，因为找不到对应的内存。</p>
+</blockquote>
+<ol>
+<li>找出 <code>type</code> 对应的数组。</li>
+<li>查到出对应内存的fn，并从数组删除。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remove(type, fn) &#123;</span><br><span class="line">  const typeFnList = this._events.get(type)</span><br><span class="line">  if (typeFnList &amp;&amp; typeFnList.includes(fn)) &#123;</span><br><span class="line">    typeFnList.splice(typeFnList.findIndex(e =&gt; e === fn), 1)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对Event Bus的原理更加了解。</p>
+<p><a href="https://github.com/crcong/demo/tree/master/EventEmeitter" target="_blank" rel="noopener">完整的demo在这</a></p>
 
           
         
@@ -497,7 +532,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
