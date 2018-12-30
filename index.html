@@ -388,7 +388,7 @@
       
         
           
-            <h1 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h1><h3 id="获取元素并获得2d上下文对象"><a href="#获取元素并获得2d上下文对象" class="headerlink" title="获取元素并获得2d上下文对象"></a>获取元素并获得2d上下文对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;</span><br><span class="line">const canvas = document.querySelector(&apos;#canvas&apos;);</span><br><span class="line">const ctx = canvas.getContext(&apos;2d&apos;);</span><br></pre></td></tr></table></figure>
+            <h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><h3 id="获取元素并获得2d上下文对象"><a href="#获取元素并获得2d上下文对象" class="headerlink" title="获取元素并获得2d上下文对象"></a>获取元素并获得2d上下文对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;</span><br><span class="line">const canvas = document.querySelector(&apos;#canvas&apos;);</span><br><span class="line">const ctx = canvas.getContext(&apos;2d&apos;);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>一些坑</p>
 </blockquote>
@@ -460,10 +460,10 @@
 <h3 id="绘制圆弧"><a href="#绘制圆弧" class="headerlink" title="绘制圆弧"></a>绘制圆弧</h3><blockquote>
 <p>有两个api</p>
 </blockquote>
-<h5 id="arc-x-y-r-startAngle-endAngle-anticlockwise"><a href="#arc-x-y-r-startAngle-endAngle-anticlockwise" class="headerlink" title="arc(x, y, r, startAngle, endAngle, anticlockwise)"></a><code>arc(x, y, r, startAngle, endAngle, anticlockwise)</code></h5><p><code>(x, y)</code> 为圆心，以 <code>r</code> 为半径，从 <code>startAngle</code> 弧度开始到 <code>endAngle</code> 弧度结束。<code>anticlosewise</code> 是布尔值，true表示逆时针，false表示顺时针。(默认是顺时针)</p>
+<h4 id="arc-x-y-r-startAngle-endAngle-anticlockwise"><a href="#arc-x-y-r-startAngle-endAngle-anticlockwise" class="headerlink" title="arc(x, y, r, startAngle, endAngle, anticlockwise)"></a><code>arc(x, y, r, startAngle, endAngle, anticlockwise)</code></h4><p><code>(x, y)</code> 为圆心，以 <code>r</code> 为半径，从 <code>startAngle</code> 弧度开始到 <code>endAngle</code> 弧度结束。<code>anticlosewise</code> 是布尔值，true表示逆时针，false表示顺时针。(默认是顺时针)</p>
 <p>注意：这里的度数都是弧度。<br>0弧度是指的x轴正方形</p>
 <p><code>radians = (Math.PI / 180) * degrees; //角度转换成弧度</code></p>
-<h5 id="arcTo-x1-y1-x2-y2-radius"><a href="#arcTo-x1-y1-x2-y2-radius" class="headerlink" title="arcTo(x1, y1, x2, y2, radius)"></a><code>arcTo(x1, y1, x2, y2, radius)</code></h5><p>arcTo方法的说明：</p>
+<h4 id="arcTo-x1-y1-x2-y2-radius"><a href="#arcTo-x1-y1-x2-y2-radius" class="headerlink" title="arcTo(x1, y1, x2, y2, radius)"></a><code>arcTo(x1, y1, x2, y2, radius)</code></h4><p>arcTo方法的说明：</p>
 <ul>
 <li><p>这个方法可以这样理解。绘制的弧形是由两条切线所决定。</p>
 </li>
