@@ -86,7 +86,7 @@
 <meta property="og:description" content="canvas获取元素并获得2d上下文对象123&amp;lt;canvas id=&amp;quot;canvas&amp;quot;&amp;gt;&amp;lt;/canvas&amp;gt;const canvas = document.querySelector(&amp;apos;#canvas&amp;apos;);const ctx = canvas.getContext(&amp;apos;2d&amp;apos;);  一些坑   不能用css去控制canv">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://mdn.mozillademos.org/files/224/Canvas_default_grid.png">
-<meta property="og:updated_time" content="2018-12-30T07:23:32.181Z">
+<meta property="og:updated_time" content="2018-12-30T07:29:11.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="canvas">
 <meta name="twitter:description" content="canvas获取元素并获得2d上下文对象123&amp;lt;canvas id=&amp;quot;canvas&amp;quot;&amp;gt;&amp;lt;/canvas&amp;gt;const canvas = document.querySelector(&amp;apos;#canvas&amp;apos;);const ctx = canvas.getContext(&amp;apos;2d&amp;apos;);  一些坑   不能用css去控制canv">
@@ -398,15 +398,70 @@
 <h3 id="简单的矩形"><a href="#简单的矩形" class="headerlink" title="简单的矩形"></a>简单的矩形</h3><p><strong>canvas</strong> 只支持一种原生的 图形绘制：矩形。所有其他图形都至少需要生成一种路径(path)。</p>
 <p>api</p>
 <ul>
-<li><figure class="highlight plain"><figcaption><span>y, width, height)```  绘制一个填充的矩形</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">- ```strockRect(x, y, width, height)``` 绘制一个矩形的边框</span><br><span class="line">- ```clearRect(x, y, widh, height)``` 清除指定的矩形区域，然后这块区域会变的完全透明</span><br><span class="line"></span><br><span class="line">x, y：指的是矩形的左上角的坐标。(相对于canvas的坐标原点)</span><br><span class="line"></span><br><span class="line">width, height：指的是绘制的矩形的宽和高</span><br><span class="line"></span><br><span class="line">超出范围会隐藏</span><br><span class="line"></span><br><span class="line">&gt; strokeRect把一像素的边框渲染成两像素</span><br><span class="line"></span><br><span class="line">- 像这个用canvas绘制出一个方形的时候，由于设置的top值和left值是50px，所以canvas会在第50和第51个像素之间从中间开始绘制一像素的线，第50和第51个像素各占0.5像素。</span><br><span class="line"></span><br><span class="line">- 计算机并不能渲染0.5个像素，所以导致第50和第51个像素都被渲染了，渲染的颜色就成了灰色。（白加黑：背景色加线的颜色）</span><br><span class="line"></span><br><span class="line">&gt; 解决办法</span><br><span class="line"></span><br><span class="line">既然会因为0.5像素的问题而渲染了两个像素，那么在设置top值和left值时，增加或减少0.5像素就可以解决了。想绘制在第51个像素就设置50.5，想绘制在第50个像素就设置49.5。</span><br><span class="line"></span><br><span class="line">另外，值得注意的是，画出来的方形大小只有99*99像素，要除去一边线的宽度。</span><br><span class="line"></span><br><span class="line">### 路径</span><br><span class="line"></span><br><span class="line">- 图形的基本元素是路径。</span><br><span class="line"></span><br><span class="line">- 路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合。</span><br><span class="line"></span><br><span class="line">- 一个路径，甚至一个子路径，都是闭合的。</span><br><span class="line"></span><br><span class="line">&gt; 使用路径绘制图形需要一些额外的步骤：</span><br><span class="line"></span><br><span class="line">1. 创建路径起始点</span><br><span class="line">2. 调用绘制方法去绘制出路径</span><br><span class="line">3. 把路径封闭</span><br><span class="line">4. 一旦路径生成，通过描边或填充路径区域来渲染图形。</span><br><span class="line"></span><br><span class="line">&gt; 需要用到的api</span><br><span class="line"></span><br><span class="line">```beginPath()``` 新建一条路径，路径一旦创建成功，图形绘制命令被指向到路径上生成路径</span><br><span class="line"></span><br><span class="line">```moveTo(x, y)``` 把画笔移动到指定的坐标(x, y)。相当于设置路径的起始点坐标。</span><br><span class="line"></span><br><span class="line">```closePath()``` 闭合路径之后，图形绘制命令又重新指向到上下文中</span><br><span class="line"></span><br><span class="line">```stroke()``` 通过线条来绘制图形轮廓</span><br><span class="line"></span><br><span class="line">```fill()``` 通过填充路径的内容区域生成实心的图形</span><br><span class="line"></span><br><span class="line">&gt; 简单例子</span><br></pre></td></tr></table></figure>
+<li><p><code>fillRect(x, y, width, height)</code>  绘制一个填充的矩形</p>
+</li>
+<li><p><code>strockRect(x, y, width, height)</code> 绘制一个矩形的边框</p>
+</li>
+<li><p><code>clearRect(x, y, widh, height)</code> 清除指定的矩形区域，然后这块区域会变的完全透明</p>
 </li>
 </ul>
-<p>ctx.beginPath(); //新建一条path<br>ctx.moveTo(50, 50); //把画笔移动到指定的坐标<br>ctx.lineTo(200, 50);  //绘制一条从当前位置到指定坐标(200, 50)的直线.<br>//闭合路径。会拉一条从当前点到path起始点的直线。如果当前点与起始点重合，则什么都不做<br>ctx.closePath();<br>ctx.stroke(); //绘制路径。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 简单三角形例子</span><br></pre></td></tr></table></figure></p>
-<p>ctx.beginPath();<br>ctx.moveTo(10, 10);<br>ctx.lineTo(10, 40);<br>ctx.lineTo(40, 10);<br>ctx.closePath();<br>ctx.stroke();<br>ctx.closePath(); //虽然我们只绘制了两条线段，但是closePath会closePath，仍然是一个3角形<br>ctx.stroke(); //描边。stroke不会自动closePath()<br>ctx.fill(); //填充闭合区域。如果path没有闭合，则fill()会自动闭合路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 绘制圆弧</span><br><span class="line"></span><br><span class="line">&gt; 有两个api</span><br><span class="line"></span><br><span class="line">##### ```arc(x, y, r, startAngle, endAngle, anticlockwise)</span><br></pre></td></tr></table></figure></p>
-<p><code>(x, y)</code> 为圆心，以 <code>r</code> 为半径，从 <code>startAngle</code> 弧度开始到 <code>endAngle</code> 弧度结束。<code>anticlosewise</code> 是布尔值，true表示逆时针，false表示顺时针。(默认是顺时针)</p>
+<p>x, y：指的是矩形的左上角的坐标。(相对于canvas的坐标原点)</p>
+<p>width, height：指的是绘制的矩形的宽和高</p>
+<p>超出范围会隐藏</p>
+<blockquote>
+<p>strokeRect把一像素的边框渲染成两像素</p>
+</blockquote>
+<ul>
+<li><p>像这个用canvas绘制出一个方形的时候，由于设置的top值和left值是50px，所以canvas会在第50和第51个像素之间从中间开始绘制一像素的线，第50和第51个像素各占0.5像素。</p>
+</li>
+<li><p>计算机并不能渲染0.5个像素，所以导致第50和第51个像素都被渲染了，渲染的颜色就成了灰色。（白加黑：背景色加线的颜色）</p>
+</li>
+</ul>
+<blockquote>
+<p>解决办法</p>
+</blockquote>
+<p>既然会因为0.5像素的问题而渲染了两个像素，那么在设置top值和left值时，增加或减少0.5像素就可以解决了。想绘制在第51个像素就设置50.5，想绘制在第50个像素就设置49.5。</p>
+<p>另外，值得注意的是，画出来的方形大小只有99*99像素，要除去一边线的宽度。</p>
+<h3 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h3><ul>
+<li><p>图形的基本元素是路径。</p>
+</li>
+<li><p>路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合。</p>
+</li>
+<li><p>一个路径，甚至一个子路径，都是闭合的。</p>
+</li>
+</ul>
+<blockquote>
+<p>使用路径绘制图形需要一些额外的步骤：</p>
+</blockquote>
+<ol>
+<li>创建路径起始点</li>
+<li>调用绘制方法去绘制出路径</li>
+<li>把路径封闭</li>
+<li>一旦路径生成，通过描边或填充路径区域来渲染图形。</li>
+</ol>
+<blockquote>
+<p>需要用到的api</p>
+</blockquote>
+<p><code>beginPath()</code> 新建一条路径，路径一旦创建成功，图形绘制命令被指向到路径上生成路径</p>
+<p><code>moveTo(x, y)</code> 把画笔移动到指定的坐标(x, y)。相当于设置路径的起始点坐标。</p>
+<p><code>closePath()</code> 闭合路径之后，图形绘制命令又重新指向到上下文中</p>
+<p><code>stroke()</code> 通过线条来绘制图形轮廓</p>
+<p><code>fill()</code> 通过填充路径的内容区域生成实心的图形</p>
+<blockquote>
+<p>简单例子</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ctx.beginPath(); //新建一条path</span><br><span class="line">ctx.moveTo(50, 50); //把画笔移动到指定的坐标</span><br><span class="line">ctx.lineTo(200, 50);  //绘制一条从当前位置到指定坐标(200, 50)的直线.</span><br><span class="line">//闭合路径。会拉一条从当前点到path起始点的直线。如果当前点与起始点重合，则什么都不做</span><br><span class="line">ctx.closePath();</span><br><span class="line">ctx.stroke(); //绘制路径。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>简单三角形例子</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ctx.beginPath();</span><br><span class="line">ctx.moveTo(10, 10);</span><br><span class="line">ctx.lineTo(10, 40);</span><br><span class="line">ctx.lineTo(40, 10);</span><br><span class="line">ctx.closePath();</span><br><span class="line">ctx.stroke();</span><br><span class="line">ctx.closePath(); //虽然我们只绘制了两条线段，但是closePath会closePath，仍然是一个3角形</span><br><span class="line">ctx.stroke(); //描边。stroke不会自动closePath()</span><br><span class="line">ctx.fill(); //填充闭合区域。如果path没有闭合，则fill()会自动闭合路径</span><br></pre></td></tr></table></figure>
+<h3 id="绘制圆弧"><a href="#绘制圆弧" class="headerlink" title="绘制圆弧"></a>绘制圆弧</h3><blockquote>
+<p>有两个api</p>
+</blockquote>
+<h5 id="arc-x-y-r-startAngle-endAngle-anticlockwise"><a href="#arc-x-y-r-startAngle-endAngle-anticlockwise" class="headerlink" title="arc(x, y, r, startAngle, endAngle, anticlockwise)"></a><code>arc(x, y, r, startAngle, endAngle, anticlockwise)</code></h5><p><code>(x, y)</code> 为圆心，以 <code>r</code> 为半径，从 <code>startAngle</code> 弧度开始到 <code>endAngle</code> 弧度结束。<code>anticlosewise</code> 是布尔值，true表示逆时针，false表示顺时针。(默认是顺时针)</p>
 <p>注意：这里的度数都是弧度。<br>0弧度是指的x轴正方形</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### ```arcTo(x1, y1, x2, y2, radius)</span><br></pre></td></tr></table></figure>
-<p>arcTo方法的说明：</p>
+<p><code>radians = (Math.PI / 180) * degrees; //角度转换成弧度</code></p>
+<h5 id="arcTo-x1-y1-x2-y2-radius"><a href="#arcTo-x1-y1-x2-y2-radius" class="headerlink" title="arcTo(x1, y1, x2, y2, radius)"></a><code>arcTo(x1, y1, x2, y2, radius)</code></h5><p>arcTo方法的说明：</p>
 <ul>
 <li><p>这个方法可以这样理解。绘制的弧形是由两条切线所决定。</p>
 </li>
@@ -418,14 +473,97 @@
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ctx.beginPath();</span><br><span class="line">ctx.moveTo(50, 50);</span><br><span class="line">//参数1、2：控制点1坐标   参数3、4：控制点2坐标  参数4：圆弧半径</span><br><span class="line">ctx.arcTo(200, 50, 200, 200, 100);</span><br><span class="line">ctx.lineTo(200, 200)</span><br><span class="line">ctx.stroke();</span><br></pre></td></tr></table></figure>
-<h3 id="绘制贝塞尔曲线"><a href="#绘制贝塞尔曲线" class="headerlink" title="绘制贝塞尔曲线"></a>绘制贝塞尔曲线</h3><figure class="highlight plain"><figcaption><span>cp1y, x, y)```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">说明：</span><br><span class="line"></span><br><span class="line">参数1和2：控制点坐标</span><br><span class="line"></span><br><span class="line">参数3和4：结束点坐标</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 添加样式和颜色</span><br><span class="line"></span><br><span class="line">&gt; 如果想要给图形上色，有两个重要的属性可以做到。</span><br><span class="line"></span><br><span class="line">`fillStyle = color` 设置图形的填充颜色</span><br><span class="line"></span><br><span class="line">`strokeStyle = color` 设置图形轮廓的颜色</span><br><span class="line"></span><br><span class="line">1. `color` 可以是表示 `css` 颜色值的字符串、渐变对象或者图案对象。</span><br><span class="line">2. 默认情况下，线条和填充颜色都是黑色。</span><br><span class="line">3. 一旦您设置了 `strokeStyle` 或者 `fillStyle` 的值，那么这个新值就会成为新绘制的图形的默认值。如果你要给每个图形上不同的颜色，你需要重新设置 `fillStyle` 或 `strokeStyle` 的值。</span><br><span class="line"></span><br><span class="line">### Transparency(透明度)</span><br><span class="line"></span><br><span class="line">`globalAlpha = transparencyValue`</span><br><span class="line"></span><br><span class="line">这个属性影响到 canvas 里所有图形的透明度，有效的值范围是 0.0 （完全透明）到 1.0（完全不透明），默认是 1.0。</span><br><span class="line"></span><br><span class="line">globalAlpha 属性在需要绘制大量拥有相同透明度的图形时候相当高效。不过，我认为使用rgba()设置透明度更加好一些。</span><br><span class="line"></span><br><span class="line">### line style</span><br><span class="line"></span><br><span class="line">&gt; 一些api</span><br><span class="line"></span><br><span class="line">1. `lineWidth = value`</span><br><span class="line"></span><br><span class="line">线宽。只能是正值。默认是1.0。</span><br><span class="line"></span><br><span class="line">起始点和终点的连线为中心，**上下各占线宽的一半**。</span><br><span class="line"></span><br><span class="line">2. `lineCap = type`</span><br><span class="line"></span><br><span class="line">线条末端样式。</span><br><span class="line"></span><br><span class="line">共有3个值：</span><br><span class="line"></span><br><span class="line">- butt：线段末端以方形结束</span><br><span class="line">- round：线段末端以圆形结束</span><br><span class="line">- square：线段末端以方形结束，但是增加了一个宽度和线段相同，高度是线段厚度一半的矩形区域。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. `lineJoin = type`</span><br><span class="line"></span><br><span class="line">共有3个值`round`, `bevel` 和 `miter`：</span><br><span class="line"></span><br><span class="line">- `round` 通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。 圆角的半径是线段的宽度。</span><br><span class="line"></span><br><span class="line">- `bevel` 在相连部分的末端填充一个额外的以三角形为底的区域， 每个部分都有各自独立的矩形拐角。</span><br><span class="line"></span><br><span class="line">- `miter` (默认) 通过延伸相连部分的外边缘，使其相交于一点，形成一个额外的菱形区域。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 绘制虚线</span><br><span class="line">用 `setLineDash` 方法和 `lineDashOffset `属性来制定虚线样式. `setLineDash` 方法接受一个数组，来指定线段与间隙的交替；`lineDashOffset`属性设置起始偏移量</span><br></pre></td></tr></table></figure>
-<p>ctx.setLineDash([20, 5]);  // [实线长度, 间隙长度]<br>ctx.lineDashOffset = -0;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">### 绘制文本</span><br><span class="line"></span><br><span class="line">&gt; 两种api</span><br><span class="line"></span><br><span class="line">1. `fillText(text, x, y [, maxWidth])`</span><br><span class="line"></span><br><span class="line">在指定的(x,y)位置填充指定的文本，绘制的最大宽度是可选的.</span><br><span class="line"></span><br><span class="line">2. `strokeText(text, x, y [, maxWidth])`</span><br><span class="line"></span><br><span class="line">在指定的(x,y)位置绘制文本边框，绘制的最大宽度是可选的.</span><br></pre></td></tr></table></figure></p>
-<p>ctx.font = “100px sans-serif”<br>ctx.fillText(“天若有情”, 10, 100);<br>ctx.strokeText(“天若有情”, 10, 200);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 给文本添加样式</span><br><span class="line"></span><br><span class="line">1. `font = value` 当前我们用来绘制文本的样式。这个字符串使用和 CSS font属性相同的语法. 默认的字体是 10px sans-serif。</span><br><span class="line">2. `textAlign = value` 文本对齐选项. 可选的值包括：start, end, left, right or center. 默认值是 start。</span><br><span class="line">3. `textBaseline = value` 基线对齐选项，可选的值包括：top, hanging, middle, alphabetic, ideographic, bottom。默认值是 alphabetic。</span><br><span class="line">4. `direction = value` 文本方向。可能的值包括：ltr, rtl, inherit。默认值是 inherit。</span><br><span class="line"></span><br><span class="line">### 绘制图片</span><br><span class="line"></span><br><span class="line">&gt; js重零创建图片</span><br><span class="line"></span><br><span class="line">js创建文本</span><br></pre></td></tr></table></figure></p>
-<p>const img = new Image();   // 创建一个<img>元素<br>img.src = ‘myImage.png’; // 设置图片源地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后再绘制到canva</span><br></pre></td></tr></table></figure></p>
-<p>//参数1：要绘制的img  参数2、3：绘制的img在canvas中的坐标<br>ctx.drawImage(img,0,0);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">注意：</span><br><span class="line"></span><br><span class="line">考虑到图片是从网络加载，如果 drawImage 的时候图片还没有完全加载完成，则什么都不做，个别浏览器会抛异常。所以我们应该保证在 img 绘制完成之后再drawImage。</span><br></pre></td></tr></table></figure></p>
-<p>const img = new Image();   // 创建img元素<br>img.onload = function(){<br>  ctx.drawImage(img, 0, 0)<br>}<br>img.src = ‘myImage.png’; // 设置图片源地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 绘制 img 标签元素中的图片</span><br></pre></td></tr></table></figure></p>
-<p>var img = document.querySelector(“img”);<br>ctx.drawImage(img, 0, 0);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 缩放图片</span><br><span class="line"></span><br><span class="line">drawImage() 也可以再添加两个参数：</span><br><span class="line"></span><br><span class="line">drawImage(image, x, y, width, height)</span><br><span class="line"></span><br><span class="line">这个方法多了2个参数：width 和 height，这两个参数用来控制 当像canvas画入时应该缩放的大小。</span><br></pre></td></tr></table></figure></p>
-<p>// 参数1：要绘制的img  参数2、3：绘制的img在canvas中的坐标 参数4、5画入时应该缩放的大小。<br>ctx.drawImage(img, 0, 0, 400, 200);<br><code>`</code></p>
+<h3 id="绘制贝塞尔曲线"><a href="#绘制贝塞尔曲线" class="headerlink" title="绘制贝塞尔曲线"></a>绘制贝塞尔曲线</h3><p><code>quadraticCurveTo(cp1x, cp1y, x, y)</code></p>
+<p>说明：</p>
+<p>参数1和2：控制点坐标</p>
+<p>参数3和4：结束点坐标</p>
+<h3 id="添加样式和颜色"><a href="#添加样式和颜色" class="headerlink" title="添加样式和颜色"></a>添加样式和颜色</h3><blockquote>
+<p>如果想要给图形上色，有两个重要的属性可以做到。</p>
+</blockquote>
+<p><code>fillStyle = color</code> 设置图形的填充颜色</p>
+<p><code>strokeStyle = color</code> 设置图形轮廓的颜色</p>
+<ol>
+<li><code>color</code> 可以是表示 <code>css</code> 颜色值的字符串、渐变对象或者图案对象。</li>
+<li>默认情况下，线条和填充颜色都是黑色。</li>
+<li>一旦您设置了 <code>strokeStyle</code> 或者 <code>fillStyle</code> 的值，那么这个新值就会成为新绘制的图形的默认值。如果你要给每个图形上不同的颜色，你需要重新设置 <code>fillStyle</code> 或 <code>strokeStyle</code> 的值。</li>
+</ol>
+<h3 id="Transparency-透明度"><a href="#Transparency-透明度" class="headerlink" title="Transparency(透明度)"></a>Transparency(透明度)</h3><p><code>globalAlpha = transparencyValue</code></p>
+<p>这个属性影响到 canvas 里所有图形的透明度，有效的值范围是 0.0 （完全透明）到 1.0（完全不透明），默认是 1.0。</p>
+<p>globalAlpha 属性在需要绘制大量拥有相同透明度的图形时候相当高效。不过，我认为使用rgba()设置透明度更加好一些。</p>
+<h3 id="line-style"><a href="#line-style" class="headerlink" title="line style"></a>line style</h3><blockquote>
+<p>一些api</p>
+</blockquote>
+<ol>
+<li><code>lineWidth = value</code></li>
+</ol>
+<p>线宽。只能是正值。默认是1.0。</p>
+<p>起始点和终点的连线为中心，<strong>上下各占线宽的一半</strong>。</p>
+<ol start="2">
+<li><code>lineCap = type</code></li>
+</ol>
+<p>线条末端样式。</p>
+<p>共有3个值：</p>
+<ul>
+<li>butt：线段末端以方形结束</li>
+<li>round：线段末端以圆形结束</li>
+<li>square：线段末端以方形结束，但是增加了一个宽度和线段相同，高度是线段厚度一半的矩形区域。</li>
+</ul>
+<ol start="3">
+<li><code>lineJoin = type</code></li>
+</ol>
+<p>共有3个值<code>round</code>, <code>bevel</code> 和 <code>miter</code>：</p>
+<ul>
+<li><p><code>round</code> 通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。 圆角的半径是线段的宽度。</p>
+</li>
+<li><p><code>bevel</code> 在相连部分的末端填充一个额外的以三角形为底的区域， 每个部分都有各自独立的矩形拐角。</p>
+</li>
+<li><p><code>miter</code> (默认) 通过延伸相连部分的外边缘，使其相交于一点，形成一个额外的菱形区域。</p>
+</li>
+</ul>
+<h3 id="绘制虚线"><a href="#绘制虚线" class="headerlink" title="绘制虚线"></a>绘制虚线</h3><p>用 <code>setLineDash</code> 方法和 <code>lineDashOffset</code>属性来制定虚线样式. <code>setLineDash</code> 方法接受一个数组，来指定线段与间隙的交替；<code>lineDashOffset</code>属性设置起始偏移量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ctx.setLineDash([20, 5]);  // [实线长度, 间隙长度]</span><br><span class="line">ctx.lineDashOffset = -0;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制文本"><a href="#绘制文本" class="headerlink" title="绘制文本"></a>绘制文本</h3><blockquote>
+<p>两种api</p>
+</blockquote>
+<ol>
+<li><code>fillText(text, x, y [, maxWidth])</code></li>
+</ol>
+<p>在指定的(x,y)位置填充指定的文本，绘制的最大宽度是可选的.</p>
+<ol start="2">
+<li><code>strokeText(text, x, y [, maxWidth])</code></li>
+</ol>
+<p>在指定的(x,y)位置绘制文本边框，绘制的最大宽度是可选的.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ctx.font = &quot;100px sans-serif&quot;</span><br><span class="line">ctx.fillText(&quot;天若有情&quot;, 10, 100);</span><br><span class="line">ctx.strokeText(&quot;天若有情&quot;, 10, 200);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>给文本添加样式</p>
+</blockquote>
+<ol>
+<li><code>font = value</code> 当前我们用来绘制文本的样式。这个字符串使用和 CSS font属性相同的语法. 默认的字体是 10px sans-serif。</li>
+<li><code>textAlign = value</code> 文本对齐选项. 可选的值包括：start, end, left, right or center. 默认值是 start。</li>
+<li><code>textBaseline = value</code> 基线对齐选项，可选的值包括：top, hanging, middle, alphabetic, ideographic, bottom。默认值是 alphabetic。</li>
+<li><code>direction = value</code> 文本方向。可能的值包括：ltr, rtl, inherit。默认值是 inherit。</li>
+</ol>
+<h3 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h3><blockquote>
+<p>js重零创建图片</p>
+</blockquote>
+<p>js创建文本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const img = new Image();   // 创建一个&lt;img&gt;元素</span><br><span class="line">img.src = &apos;myImage.png&apos;; // 设置图片源地址</span><br></pre></td></tr></table></figure>
+<p>然后再绘制到canva</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//参数1：要绘制的img  参数2、3：绘制的img在canvas中的坐标</span><br><span class="line">ctx.drawImage(img,0,0);</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<p>考虑到图片是从网络加载，如果 drawImage 的时候图片还没有完全加载完成，则什么都不做，个别浏览器会抛异常。所以我们应该保证在 img 绘制完成之后再drawImage。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> img = <span class="keyword">new</span> Image();   <span class="comment">// 创建img元素</span></span><br><span class="line">img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  ctx.drawImage(img, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line">img.src = <span class="string">'myImage.png'</span>; <span class="comment">// 设置图片源地址</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>绘制 img 标签元素中的图片</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> img = <span class="built_in">document</span>.querySelector(<span class="string">"img"</span>);</span><br><span class="line">ctx.drawImage(img, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>缩放图片</p>
+</blockquote>
+<p>drawImage() 也可以再添加两个参数：</p>
+<p>drawImage(image, x, y, width, height)</p>
+<p>这个方法多了2个参数：width 和 height，这两个参数用来控制 当像canvas画入时应该缩放的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 参数1：要绘制的img  参数2、3：绘制的img在canvas中的坐标 参数4、5画入时应该缩放的大小。</span><br><span class="line">ctx.drawImage(img, 0, 0, 400, 200);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>切片</p>
 </blockquote>
@@ -608,7 +746,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#canvas"><span class="nav-number">1.</span> <span class="nav-text">canvas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素并获得2d上下文对象"><span class="nav-number">1.1.</span> <span class="nav-text">获取元素并获得2d上下文对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栅格-grid-和坐标空间"><span class="nav-number">1.2.</span> <span class="nav-text">栅格(grid)和坐标空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的矩形"><span class="nav-number">1.3.</span> <span class="nav-text">简单的矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制贝塞尔曲线"><span class="nav-number">1.4.</span> <span class="nav-text">绘制贝塞尔曲线</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#canvas"><span class="nav-number">1.</span> <span class="nav-text">canvas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素并获得2d上下文对象"><span class="nav-number">1.1.</span> <span class="nav-text">获取元素并获得2d上下文对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栅格-grid-和坐标空间"><span class="nav-number">1.2.</span> <span class="nav-text">栅格(grid)和坐标空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的矩形"><span class="nav-number">1.3.</span> <span class="nav-text">简单的矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径"><span class="nav-number">1.4.</span> <span class="nav-text">路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制圆弧"><span class="nav-number">1.5.</span> <span class="nav-text">绘制圆弧</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#arc-x-y-r-startAngle-endAngle-anticlockwise"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">arc(x, y, r, startAngle, endAngle, anticlockwise)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arcTo-x1-y1-x2-y2-radius"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">arcTo(x1, y1, x2, y2, radius)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制贝塞尔曲线"><span class="nav-number">1.6.</span> <span class="nav-text">绘制贝塞尔曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加样式和颜色"><span class="nav-number">1.7.</span> <span class="nav-text">添加样式和颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transparency-透明度"><span class="nav-number">1.8.</span> <span class="nav-text">Transparency(透明度)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#line-style"><span class="nav-number">1.9.</span> <span class="nav-text">line style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制虚线"><span class="nav-number">1.10.</span> <span class="nav-text">绘制虚线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制文本"><span class="nav-number">1.11.</span> <span class="nav-text">绘制文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制图片"><span class="nav-number">1.12.</span> <span class="nav-text">绘制图片</span></a></li></ol></li></ol></div>
             
 
           </div>
