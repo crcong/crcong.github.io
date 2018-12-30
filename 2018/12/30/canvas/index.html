@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="原生js," />
 
 
 
@@ -77,17 +77,20 @@
 
 
 
-<meta name="description" content="Better late than never">
-<meta name="keywords" content="blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Rc&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="canvas获取元素并获得2d上下文对象123&amp;lt;canvas id=&amp;quot;canvas&amp;quot;&amp;gt;&amp;lt;/canvas&amp;gt;const canvas = document.querySelector(&amp;apos;#canvas&amp;apos;);const ctx = canvas.getContext(&amp;apos;2d&amp;apos;);  一些坑   不能用css去控制canv">
+<meta name="keywords" content="原生js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="canvas">
+<meta property="og:url" content="http://yoursite.com/2018/12/30/canvas/index.html">
 <meta property="og:site_name" content="Rc&#39;s Blog">
-<meta property="og:description" content="Better late than never">
+<meta property="og:description" content="canvas获取元素并获得2d上下文对象123&amp;lt;canvas id=&amp;quot;canvas&amp;quot;&amp;gt;&amp;lt;/canvas&amp;gt;const canvas = document.querySelector(&amp;apos;#canvas&amp;apos;);const ctx = canvas.getContext(&amp;apos;2d&amp;apos;);  一些坑   不能用css去控制canv">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mdn.mozillademos.org/files/224/Canvas_default_grid.png">
+<meta property="og:updated_time" content="2018-12-30T07:20:19.976Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rc&#39;s Blog">
-<meta name="twitter:description" content="Better late than never">
+<meta name="twitter:title" content="canvas">
+<meta name="twitter:description" content="canvas获取元素并获得2d上下文对象123&amp;lt;canvas id=&amp;quot;canvas&amp;quot;&amp;gt;&amp;lt;/canvas&amp;gt;const canvas = document.querySelector(&amp;apos;#canvas&amp;apos;);const ctx = canvas.getContext(&amp;apos;2d&amp;apos;);  一些坑   不能用css去控制canv">
+<meta name="twitter:image" content="https://mdn.mozillademos.org/files/224/Canvas_default_grid.png">
 
 
 
@@ -117,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/30/canvas/"/>
 
 
 
 
 
-  <title>Rc's Blog</title>
+  <title>canvas | Rc's Blog</title>
   
 
 
@@ -142,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -280,9 +282,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -312,9 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/30/canvas/" itemprop="url">canvas</a></h1>
+          <h1 class="post-title" itemprop="name headline">canvas</h1>
         
 
         <div class="post-meta">
@@ -386,9 +386,7 @@
       
 
       
-        
-          
-            <h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><h3 id="获取元素并获得2d上下文对象"><a href="#获取元素并获得2d上下文对象" class="headerlink" title="获取元素并获得2d上下文对象"></a>获取元素并获得2d上下文对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;</span><br><span class="line">const canvas = document.querySelector(&apos;#canvas&apos;);</span><br><span class="line">const ctx = canvas.getContext(&apos;2d&apos;);</span><br></pre></td></tr></table></figure>
+        <h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><h3 id="获取元素并获得2d上下文对象"><a href="#获取元素并获得2d上下文对象" class="headerlink" title="获取元素并获得2d上下文对象"></a>获取元素并获得2d上下文对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;</span><br><span class="line">const canvas = document.querySelector(&apos;#canvas&apos;);</span><br><span class="line">const ctx = canvas.getContext(&apos;2d&apos;);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>一些坑</p>
 </blockquote>
@@ -437,8 +435,6 @@
 <p>前4个是定义图像源的切片位置和大小，</p>
 <p>后4个则是定义切片的目标显示位置和大小。</p>
 
-          
-        
       
     </div>
     
@@ -453,168 +449,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/eventBus/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rc">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/29054821?s=400&u=99be1e5c64747fbd8ce9a295fdc8ab0efccf3c9a&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/15/eventBus/" itemprop="url">Event Bus的实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T16:03:42+08:00">
-                2018-06-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/原生js/" rel="tag"># 原生js</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <h2 id="Event-Bus的实现"><a href="#Event-Bus的实现" class="headerlink" title="Event Bus的实现"></a>Event Bus的实现</h2><hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Event Bus 使用的范围也很广泛。</p>
-<ol>
-<li><code>react</code> <code>vue</code> 非父子组件就经常用Event Bus进行通信。</li>
-<li><code>Node.js</code> 中的很多模块都依赖Event。</li>
-</ol>
-<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><blockquote>
-<p>Event Bus是 <strong>发布订阅模式</strong> 的典型应用。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/15/eventBus/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/15/eventBus/" rel="next" title="Event Bus的实现">
+                <i class="fa fa-chevron-left"></i> Event Bus的实现
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -624,10 +488,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -635,6 +500,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -655,8 +524,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -720,6 +598,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#canvas"><span class="nav-number">1.</span> <span class="nav-text">canvas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素并获得2d上下文对象"><span class="nav-number">1.1.</span> <span class="nav-text">获取元素并获得2d上下文对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栅格-grid-和坐标空间"><span class="nav-number">1.2.</span> <span class="nav-text">栅格(grid)和坐标空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的矩形"><span class="nav-number">1.3.</span> <span class="nav-text">简单的矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制贝塞尔曲线"><span class="nav-number">1.4.</span> <span class="nav-text">绘制贝塞尔曲线</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -860,6 +754,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="原生js,造轮子," />
 
 
 
@@ -77,17 +77,18 @@
 
 
 
-<meta name="description" content="Better late than never">
-<meta name="keywords" content="blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Rc&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/archives/2018/06/index.html">
+<meta name="description" content="Event Bus的实现 前言Event Bus 使用的范围也很广泛。  react vue 非父子组件就经常用Event Bus进行通信。 Node.js 中的很多模块都依赖Event。  实现思路 Event Bus是 发布订阅模式 的典型应用。">
+<meta name="keywords" content="原生js,造轮子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Event Bus的实现">
+<meta property="og:url" content="http://yoursite.com/2018/06/15/eventBus/index.html">
 <meta property="og:site_name" content="Rc&#39;s Blog">
-<meta property="og:description" content="Better late than never">
+<meta property="og:description" content="Event Bus的实现 前言Event Bus 使用的范围也很广泛。  react vue 非父子组件就经常用Event Bus进行通信。 Node.js 中的很多模块都依赖Event。  实现思路 Event Bus是 发布订阅模式 的典型应用。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-30T07:19:13.409Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rc&#39;s Blog">
-<meta name="twitter:description" content="Better late than never">
+<meta name="twitter:title" content="Event Bus的实现">
+<meta name="twitter:description" content="Event Bus的实现 前言Event Bus 使用的范围也很广泛。  react vue 非父子组件就经常用Event Bus进行通信。 Node.js 中的很多模块都依赖Event。  实现思路 Event Bus是 发布订阅模式 的典型应用。">
 
 
 
@@ -117,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2018/06/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/15/eventBus/"/>
 
 
 
 
 
-  <title>归档 | Rc's Blog</title>
+  <title>Event Bus的实现 | Rc's Blog</title>
   
 
 
@@ -142,7 +143,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -280,74 +281,220 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 2 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/eventBus/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/29054821?s=400&u=99be1e5c64747fbd8ce9a295fdc8ab0efccf3c9a&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/06/15/eventBus/" itemprop="url">
-              
-                <span itemprop="name">Event Bus的实现</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Event Bus的实现</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-15T16:03:42+08:00"
-              content="2018-06-15" >
-          06-15
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T16:03:42+08:00">
+                2018-06-15
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <h2 id="Event-Bus的实现"><a href="#Event-Bus的实现" class="headerlink" title="Event Bus的实现"></a>Event Bus的实现</h2><hr>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Event Bus 使用的范围也很广泛。</p>
+<ol>
+<li><code>react</code> <code>vue</code> 非父子组件就经常用Event Bus进行通信。</li>
+<li><code>Node.js</code> 中的很多模块都依赖Event。</li>
+</ol>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><blockquote>
+<p>Event Bus是 <strong>发布订阅模式</strong> 的典型应用。</p>
+</blockquote>
+<a id="more"></a>
+<p>这里实现使用 <code>ES6</code> 语法。</p>
+<p>使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 注册一个Event Bus</span><br><span class="line">const emitter = new EventEmeitter()</span><br><span class="line"></span><br><span class="line">// 增加监听事件</span><br><span class="line">emitter.on(&apos;test&apos;, a =&gt; &#123;</span><br><span class="line">  console.log(`on: $&#123;a&#125;`)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 触发事件</span><br><span class="line">emitter.emit(&apos;test&apos;, &apos;a=10&apos;)</span><br></pre></td></tr></table></figure>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><blockquote>
+<p>创建一个 <code>EventEmeitter</code> 类。</p>
+</blockquote>
+<ol>
+<li>参数 <code>maxListeners</code> 是 监听者 最多能简单多少个事件。</li>
+<li><code>_events</code> 则是 存储事件 的数据结构。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">constructor(maxListeners) &#123;</span><br><span class="line">  this._events = new Map()</span><br><span class="line">  this._maxListeners = (maxListeners &amp;&amp; maxListeners &gt; 0) ? maxListeners : 10</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-存储事件"><a href="#1-存储事件" class="headerlink" title="1. 存储事件"></a>1. 存储事件</h4><blockquote>
+<p><code>emitter.on(type, fn)</code></p>
+</blockquote>
+<ol>
+<li>增加监听事件的时候，必需要储存 <code>type</code> 对应的事件。</li>
+<li>type对应的 <code>事件(fn)</code> 可能是有多个的。</li>
+</ol>
+<p>所以应该使用key: value的方式去存储。第一时间可能想到的是 <code>对象Object</code>。<br>这里使用ES6新增的 <code>Map</code> 作为存储结构。<a href="http://es6.ruanyifeng.com/#docs/set-map#Map" target="_blank" rel="noopener">Map用法传送门</a></p>
+<p>那么 <code>Map</code> 的 key 就是 <code>type</code>，value 则是 <code>数组</code>，数组里面存的是需要触发的 <code>函数</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">on(type, fn) &#123;</span><br><span class="line">  const typeFnList = this._events.get(type)</span><br><span class="line">  if (typeFnList) &#123;</span><br><span class="line">    if (typeFnList.length &gt;= this._maxListeners) return</span><br><span class="line">    typeFnList.push(fn)</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    this._events.set(type, [fn])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-触发事件"><a href="#2-触发事件" class="headerlink" title="2. 触发事件"></a>2. 触发事件</h4><blockquote>
+<p><code>emitter.emit(type, ...args)</code></p>
+</blockquote>
+<ol>
+<li>现在上面所述的 <code>Map</code> 中找出 type 所对应的 <code>函数的数组</code> 。</li>
+<li>再遍历数组，执行数组里面所有的函数。</li>
+</ol>
+<p>触发监听函数我们可以用 <code>apply</code> 与 <code>call</code> 两种方法，在少数参数时call的性能更好,多个参数时apply性能更好，当年Node的Event模块就在三个参数以下用call否则用 <code>apply</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">emit(type, ...args) &#123;</span><br><span class="line">  const typeFnList = this._events.get(type)</span><br><span class="line">  typeFnList &amp;&amp; typeFnList.forEach(fn =&gt; fn.apply(this, args))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-移除事件"><a href="#3-移除事件" class="headerlink" title="3. 移除事件"></a>3. 移除事件</h4><blockquote>
+<p><code>emitter.remove(type, fn)</code><br>匿名函数不能移除，因为找不到对应的内存。</p>
+</blockquote>
+<ol>
+<li>找出 <code>type</code> 对应的数组。</li>
+<li>查到出对应内存的fn，并从数组删除。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remove(type, fn) &#123;</span><br><span class="line">  const typeFnList = this._events.get(type)</span><br><span class="line">  if (typeFnList &amp;&amp; typeFnList.includes(fn)) &#123;</span><br><span class="line">    typeFnList.splice(typeFnList.findIndex(e =&gt; e === fn), 1)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对Event Bus的原理更加了解。</p>
+<p><a href="https://github.com/crcong/demo/tree/master/EventEmeitter" target="_blank" rel="noopener">完整的demo在这</a></p>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/原生js/" rel="tag"># 原生js</a>
+          
+            <a href="/tags/造轮子/" rel="tag"># 造轮子</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/30/canvas/" rel="prev" title="canvas">
+                canvas <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -355,6 +502,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -375,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -440,6 +600,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-Bus的实现"><span class="nav-number">1.</span> <span class="nav-text">Event Bus的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现思路"><span class="nav-number">1.2.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.3.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-存储事件"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 存储事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-触发事件"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 触发事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-移除事件"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. 移除事件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -580,6 +756,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
