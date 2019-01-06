@@ -295,6 +295,370 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/nginx解决跨域/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/29054821?s=400&u=99be1e5c64747fbd8ce9a295fdc8ab0efccf3c9a&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/06/nginx解决跨域/" itemprop="url">nginx解决跨域</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-06T14:23:58+08:00">
+                2019-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="nginx反向代理解决跨域"><a href="#nginx反向代理解决跨域" class="headerlink" title="nginx反向代理解决跨域"></a>nginx反向代理解决跨域</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在的项目大部分都变成前后端分离，前后端项目分开开发，尤其是单页面应用，前端代码会开启单独的服务器，若直接在前端项目中访问后端的接口，肯定会遇到因跨域不能访问的问题。</p>
+<h2 id="跨域的常见解决方法"><a href="#跨域的常见解决方法" class="headerlink" title="跨域的常见解决方法"></a>跨域的常见解决方法</h2><ol>
+<li>jsonp</li>
+<li>cors 需要服务器设置header <code>Access-Control-Allow-Origin</code></li>
+<li>html5 <code>postMessage+iframe</code></li>
+<li><code>nginx反向代理</code></li>
+</ol>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p>我们只需要配置nginx，在一个服务器上配置多个前缀来转发http/https请求到多个真实的服务器即可。这样，这个服务器上所有url都是相同的域名、协议和端口。</p>
+<p>比如接口的前缀是 <code>/api/</code></p>
+<p>我们可以写多一个location，拦截api，去反向代理接口服务器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /api/ &#123;</span><br><span class="line">    # 所有对后端的请求加一个api前缀方便区分，真正访问的时候移除这个前缀</span><br><span class="line">    # 重写url，把/api/过滤掉</span><br><span class="line">    rewrite ^/api/(.*)$ /$1 break;</span><br><span class="line">    # API Server</span><br><span class="line">    proxy_pass http://www.apiServer.com;  #将真正的请求代理到apiServer,即真实的服务器地址，ajax的url为/api/user/1的请求将会访问http://www.apiServer.com/user/1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/01/nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/29054821?s=400&u=99be1e5c64747fbd8ce9a295fdc8ab0efccf3c9a&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/01/nginx/" itemprop="url">nginx基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-01T22:53:49+08:00">
+                2019-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/运维/" itemprop="url" rel="index">
+                    <span itemprop="name">运维</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1><blockquote>
+<p>“Nginx是一款轻量级的HTTP服务器，采用事件驱动的异步非阻塞处理方式框架，这让其具有极好的IO性能，时常用于服务端的反向代理和负载均衡。”</p>
+</blockquote>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p>停止nginx</p>
+<p><code>nginx  -s stop</code></p>
+<p><code>nginx -s quit</code></p>
+<p><code>killall nginx</code></p>
+<p>重启nginx <code>nginx -s reload</code></p>
+<p>停止服务 <code>systemctl stop nginx.service</code></p>
+<p>重启服务 <code>systemctl restart nginx.service</code></p>
+<p>查看端口号</p>
+<p>在默认情况下，Nginx启动后会监听80端口，从而提供HTTP访问，如果80端口已经被占用则会启动失败。我么可以使用 <code>netstat -tlnp</code> 命令查看端口号的占用情况。</p>
+<h2 id="配置文件-nginx-conf"><a href="#配置文件-nginx-conf" class="headerlink" title="配置文件(nginx.conf)"></a>配置文件(nginx.conf)</h2><blockquote>
+<p>nginx.conf文件是Nginx总配置文件，在我们搭建服务器时经常调整的文件。</p>
+</blockquote>
+<p>下面是文件的详细注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#运行用户，默认即是nginx，可以不进行设置</span><br><span class="line">user  nginx;</span><br><span class="line">#Nginx进程，一般设置为和CPU核数一样</span><br><span class="line">worker_processes  1;</span><br><span class="line">#错误日志存放目录</span><br><span class="line">error_log  /var/log/nginx/error.log warn;</span><br><span class="line">#进程pid存放位置</span><br><span class="line">pid        /var/run/nginx.pid;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024; # 单个后台进程的最大并发数</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    include       /etc/nginx/mime.types;   #文件扩展名与类型映射表</span><br><span class="line">    default_type  application/octet-stream;  #默认文件类型</span><br><span class="line">    #设置日志模式</span><br><span class="line">    log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                      &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                      &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line">    access_log  /var/log/nginx/access.log  main;   #nginx访问日志存放位置</span><br><span class="line">    sendfile        on;   #开启高效传输模式</span><br><span class="line">    #tcp_nopush     on;    #减少网络报文段的数量</span><br><span class="line">    keepalive_timeout  65;  #保持连接的时间，也叫超时时间</span><br><span class="line">    #gzip  on;  #开启gzip压缩</span><br><span class="line">    include ./include/*; #包含的子配置项位置和文件，因为所有的最好不要全写在这里，容易管理。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="location配置"><a href="#location配置" class="headerlink" title="location配置"></a>location配置</h2><p>语法规则：<code>location [=|~|~*|^~] /uri/ { … }</code></p>
+<p><code>=</code> 开头表示精确匹配</p>
+<p><code>^~</code> 开头表示uri以某个常规字符串开头，理解为匹配 url路径即可。</p>
+<p><code>~</code> 开头表示区分大小写的正则匹配</p>
+<p><code>~*</code> 开头表示不区分大小写的正则匹配</p>
+<p><code>!~</code> 和 <code>!~*</code><br>分别为区分大小写不匹配及不区分大小写不匹配 的正则</p>
+<p><code>/</code> 通用匹配，任何请求都会匹配到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">location = / &#123;</span><br><span class="line">   #规则A</span><br><span class="line">&#125;</span><br><span class="line">location = /login &#123;</span><br><span class="line">   #规则B</span><br><span class="line">&#125;</span><br><span class="line">location ^~ /static/ &#123;</span><br><span class="line">   #规则C</span><br><span class="line">&#125;</span><br><span class="line">location ~ \.(gif|jpg|png|js|css)$ &#123;</span><br><span class="line">   #规则D</span><br><span class="line">&#125;</span><br><span class="line">location ~* \.png$ &#123;</span><br><span class="line">   #规则E</span><br><span class="line">&#125;</span><br><span class="line">location !~ \.xhtml$ &#123;</span><br><span class="line">   #规则F</span><br><span class="line">&#125;</span><br><span class="line">location !~* \.xhtml$ &#123;</span><br><span class="line">   #规则G</span><br><span class="line">&#125;</span><br><span class="line">location / &#123;</span><br><span class="line">   #规则H</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么产生的效果如下：</p>
+<ul>
+<li>访问根目录/， 比如 <a href="http://localhost/" target="_blank" rel="noopener">http://localhost/</a> 将匹配规则A</li>
+<li>访问 <a href="http://localhost/login" target="_blank" rel="noopener">http://localhost/login</a> 将匹配规则B，<a href="http://localhost/register" target="_blank" rel="noopener">http://localhost/register</a> 则匹配规则H</li>
+<li>访问 <a href="http://localhost/static/a.html" target="_blank" rel="noopener">http://localhost/static/a.html</a> 将匹配规则C</li>
+<li>访问 <a href="http://localhost/a.gif" target="_blank" rel="noopener">http://localhost/a.gif</a>, <a href="http://localhost/b.jpg" target="_blank" rel="noopener">http://localhost/b.jpg</a> 将匹配规则D和规则E，但是规则D顺序优先，规则E不起作用，而 <a href="http://localhost/static/c.png" target="_blank" rel="noopener">http://localhost/static/c.png</a> 则优先匹配到 规则C</li>
+<li>访问 <a href="http://localhost/a.PNG" target="_blank" rel="noopener">http://localhost/a.PNG</a> 则匹配规则E， 而不会匹配规则D，因为规则E不区分大小写。</li>
+<li>访问 <a href="http://localhost/a.xhtml" target="_blank" rel="noopener">http://localhost/a.xhtml</a> ，不会匹配规则F和规则G，<a href="http://localhost/a.XHTML不会匹配规则G，因为不区分大小写。规则F，规则G属于排除法，符合匹配规则但是不会匹配到，所以想想看实际应用中哪里会用到。" target="_blank" rel="noopener">http://localhost/a.XHTML不会匹配规则G，因为不区分大小写。规则F，规则G属于排除法，符合匹配规则但是不会匹配到，所以想想看实际应用中哪里会用到。</a></li>
+<li>访问 <a href="http://localhost/category/id/1111" target="_blank" rel="noopener">http://localhost/category/id/1111</a> 则最终匹配到规则H，因为以上规则都不匹配，这个时候应该是nginx转发请求给后端应用服务器，比如FastCGI（php），tomcat（jsp），nginx作为方向代理服务器存在。</li>
+</ul>
+<h2 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h2><p>在同一个块下的两个权限指令，先出现的设置会覆盖后出现的设置（也就是谁先触发，谁起作用）。即deny all之后，allow谁都没用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    deny   192.168.1.23; # 禁止访问</span><br><span class="line">    allow  192.168.1.23; # 允许访问</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="基于端口号配置虚拟主机"><a href="#基于端口号配置虚拟主机" class="headerlink" title="基于端口号配置虚拟主机"></a>基于端口号配置虚拟主机</h2><blockquote>
+<p>基于端口号来配置虚拟主机，算是Nginx中最简单的一种方式了。原理就是Nginx监听多个端口，根据不同的端口号，来区分不同的网站。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 8001; # 端口</span><br><span class="line">    server_name localhost; # 域名</span><br><span class="line">    root /usr/share/nginx/html/html8001; # 路径</span><br><span class="line">    index index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="基于域名设置虚拟主机"><a href="#基于域名设置虚拟主机" class="headerlink" title="基于域名设置虚拟主机"></a>基于域名设置虚拟主机</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">    listen 80; # 端口</span><br><span class="line">    server_name www.crcong.cn; # 域名</span><br><span class="line">    location / &#123;</span><br><span class="line">        root /www.crcong.cn;</span><br><span class="line">        index index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><blockquote>
+<p>proxy_pass</p>
+</blockquote>
+<h3 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h3><p>访问 <code>www.crcong.cn</code> 就会代理到 <code>127.0.0.1:3000</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name www.crcong.cn;</span><br><span class="line">    location / &#123;</span><br><span class="line">       proxy_pass 127.0.0.1:3000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="其他代理指令"><a href="#其他代理指令" class="headerlink" title="其他代理指令"></a>其他代理指令</h3><ul>
+<li><p>proxy_set_header :在将客户端请求发送给后端服务器之前，更改来自客户端的请求头信息。</p>
+</li>
+<li><p>proxy_connect_timeout:配置Nginx与后端代理服务器尝试建立连接的超时时间。</p>
+</li>
+<li><p>proxy_read_timeout : 配置Nginx向后端服务器组发出read请求后，等待相应的超时时间。</p>
+</li>
+<li>proxy_send_timeout：配置Nginx向后端服务器组发出write请求后，等待相应的超时时间。</li>
+<li>proxy_redirect :用于修改后端服务器返回的响应头中的Location和Refresh。</li>
+</ul>
+<h2 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h2><blockquote>
+<p>gzip是网页的一种网页压缩技术，经过gzip压缩后，页面大小可以变为原来的30%甚至更小。更小的网页会让用户浏览的体验更好，速度更快。gzip网页压缩的实现需要浏览器和服务器的支持。</p>
+</blockquote>
+<h3 id="简单开启方式"><a href="#简单开启方式" class="headerlink" title="简单开启方式"></a>简单开启方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">   .....</span><br><span class="line">    gzip on;</span><br><span class="line">    gzip_types text/plain application/javascript text/css; # 压缩文本、JavaScript和css</span><br><span class="line">   .....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="其他指令"><a href="#其他指令" class="headerlink" title="其他指令"></a>其他指令</h3><ul>
+<li>gzip : 该指令用于开启或 关闭gzip模块。</li>
+<li>gzip_buffers : 设置系统获取几个单位的缓存用于存储gzip的压缩结果数据流。</li>
+<li>gzip_comp_level : gzip压缩比，压缩级别是1-9，1的压缩级别最低，9的压缩级别最高。压缩级别越高压缩率越大，压缩时间越长。</li>
+<li>gzip_disable : 可以通过该指令对一些特定的User-Agent不使用压缩功能。</li>
+<li>gzip_min_length:设置允许压缩的页面最小字节数，页面字节数从相应消息头的Content-length中进行获取。</li>
+<li>gzip_http_version：识别HTTP协议版本，其值可以是1.1.或1.0.</li>
+<li>gzip_proxied : 用于设置启用或禁用从代理服务器上收到相应内容gzip压缩。</li>
+<li>gzip_vary : 用于在响应消息头中添加Vary：Accept-Encoding,使代理服务器根据请求头中的Accept-Encoding识别是否启用gzip压缩。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/30/canvas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -813,7 +1177,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -824,7 +1188,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -835,7 +1199,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -872,7 +1236,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
