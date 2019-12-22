@@ -295,6 +295,215 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/22/Vue响应式原理解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/29054821?s=400&u=99be1e5c64747fbd8ce9a295fdc8ab0efccf3c9a&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/22/Vue响应式原理解析/" itemprop="url">Vue响应式原理解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-22T16:50:40+08:00">
+                2019-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Vue响应式"><a href="#Vue响应式" class="headerlink" title="Vue响应式"></a>Vue响应式</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>数据响应式系统是Vue最显著的一个特性，我们通过Vue官方文档回顾一下。</p>
+<blockquote>
+<p> 数据模型仅仅是普通的 JavaScript 对象。而当你修改它们时，视图会进行更新。这使得状态管理非常简单直接，不过理解其工作原理同样重要，这样你可以避开一些常见的问题。</p>
+</blockquote>
+<p>现在是时候深入一下了！<br>本文针对响应式系统的原理进行一个详细介绍。</p>
+<h2 id="响应式是什么"><a href="#响应式是什么" class="headerlink" title="响应式是什么"></a>响应式是什么</h2><p>我们先来看一个例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123;color&#125;&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">  &lt;button @click="changeColor"&gt;change color!&lt;/</span>button&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">new Vue(&#123;</span></span><br><span class="line"><span class="regexp">  el: '#app',</span></span><br><span class="line"><span class="regexp">  data() &#123;</span></span><br><span class="line"><span class="regexp">    color: 'blue'</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  methods: &#123;</span></span><br><span class="line"><span class="regexp">    changeColor() &#123;</span></span><br><span class="line"><span class="regexp">      this.color = 'yellow';</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;)</span></span><br></pre></td></tr></table></figure>
+<p>当我们点击按钮的时候，视图的p标签文本就会从 <code>blue</code>改变成<code>yellow</code>。</p>
+<p>Vue要完成这次更新，其实需要做两件事情：</p>
+<ol>
+<li><strong>监听</strong>数据<code>color</code>的变化。</li>
+<li>当数据<code>color</code>更新变化时，自动<strong>通知</strong>依赖该数据的视图。</li>
+</ol>
+<p>换成专业那么一点点点的名词就是利用<code>数据劫持/数据代理</code>去进行<code>依赖收集</code>、<code>发布订阅模式</code>。</p>
+<p>我们只需要记住一句话：<strong>在getter中收集依赖，在setter中触发依赖</strong></p>
+<h2 id="如何追踪侦测数据的变化"><a href="#如何追踪侦测数据的变化" class="headerlink" title="如何追踪侦测数据的变化"></a>如何追踪侦测数据的变化</h2><p>首先有个问题，如何侦测一个对象的变化？</p>
+<p>目前来说，侦测对象变化有两种方法。大家都知道的！</p>
+<h4 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty"></a>Object.defineProperty</h4><p>vue 2.x就是使用<code>Object.defineProperty</code>来数据响应式系统的。但是用此方法来来侦测变化会有很多缺陷。例如:</p>
+<ol>
+<li>Object.defineProperty无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应；</li>
+<li>Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。</li>
+<li>……</li>
+</ol>
+<p>本文也是利用Object.defineProperty来介绍响应式系统。</p>
+<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>vue3就是通过proxy实现响应式系统的。而且在国庆期间已经发布<a href="https://github.com/vuejs/vue-next" target="_blank" rel="noopener">pre-alpha版本</a>。</p>
+<p>相比旧的<code>Object.defineProperty</code>, <code>proxy</code>可以代理整个对象，并且提供了多个<code>traps</code>，可以实现诸多功能。此外，Proxy支持代理数组的变化等等</p>
+<p>当然proxy也有一个致命的缺点，就是无法通过<code>polyfill</code>模拟，兼容性较差。</p>
+<h2 id="依赖收集的重要角色-Dep-Watcher"><a href="#依赖收集的重要角色-Dep-Watcher" class="headerlink" title="依赖收集的重要角色 Dep Watcher"></a>依赖收集的重要角色 Dep Watcher</h2><p><code>Dep</code>、<code>Watcher</code>是数据响应式中两个比较重要的角色。</p>
+<h4 id="收集依赖的地方-Dep"><a href="#收集依赖的地方-Dep" class="headerlink" title="收集依赖的地方 Dep"></a>收集依赖的地方 Dep</h4><p>因为在视图模板上可能有多处地方都引用同一个数据，所以要有一个地方去存放数据的依赖，这个地方就是Dep。</p>
+<p>Dep主要维护一个<strong>依赖的数组</strong>，当我们利用render函数生成VNode的时候，会触发数据的getter，然后则会把依赖push到Dep的依赖数组中。</p>
+<h4 id="依赖是Watcher！"><a href="#依赖是Watcher！" class="headerlink" title="依赖是Watcher！"></a>依赖是Watcher！</h4><p>我们可以把<code>Watcher</code>理解成一个<strong>中介的角色</strong>，数据发生变化时，会触发数据的setter，然后通过遍历Dep中的依赖Watcher，然后Watcher通知额外的操作，额外的操作可能是更新视图、更新computed、更新watch等等….</p>
+<h2 id="原理实现"><a href="#原理实现" class="headerlink" title="原理实现"></a>原理实现</h2><p>还是那句话：<strong>在getter中收集依赖，在setter中触发依赖</strong>。</p>
+<p>下面我们看看代码:</p>
+<p>代码有点长，下面会有步骤来讲解一次。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 劫持数据的getter、setter</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">defineReactive</span>(<span class="params">data, key, val</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1-1：把color数据变成响应式</span></span><br><span class="line">  <span class="keyword">const</span> dep = <span class="keyword">new</span> Dep();</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(data, key, &#123;</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span>,</span><br><span class="line">    get() &#123;</span><br><span class="line">      <span class="comment">// 3. 因为模板编译watcher访问到了color，从而触发get方法，触发了收集依赖的方法</span></span><br><span class="line">      dep.depend();</span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newVal) &#123;</span><br><span class="line">      <span class="keyword">if</span> (val === newVal) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      val = newVal;</span><br><span class="line">      <span class="comment">// 4-1. 假设我们通过 `this.color = 'yellow';`去更改`color`的值，就会触发set方法。</span></span><br><span class="line">      dep.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * dep类，收集依赖，和触发依赖</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dep</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.subs = []; <span class="comment">// 收集依赖的数组</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 收集依赖</span></span><br><span class="line">  depend() &#123;</span><br><span class="line">    <span class="comment">// 3-1. 通过外部的变量来添加到color的依赖中.</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.target &amp;&amp; !<span class="keyword">this</span>.subs.includes(<span class="built_in">window</span>.target)) &#123;</span><br><span class="line">      <span class="keyword">this</span>.subs.push(<span class="built_in">window</span>.target);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 通知依赖更新</span></span><br><span class="line">  notify() &#123;</span><br><span class="line">    <span class="comment">// 4-2. 遍历</span></span><br><span class="line">    <span class="keyword">this</span>.subs.forEach(<span class="function"><span class="params">watcher</span> =&gt;</span> &#123;</span><br><span class="line">      watcher.update();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 数据与外部的中介</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Watcher</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(expr, cb) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cb = cb;</span><br><span class="line">    <span class="keyword">this</span>.expr = expr;</span><br><span class="line">    <span class="comment">// 2-1. 这里触发了get方法</span></span><br><span class="line">    <span class="keyword">this</span>.value = <span class="keyword">this</span>.get();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  get() &#123;</span><br><span class="line">    <span class="comment">// 2-2. 这里把自己(watcher)赋值给了外部其中的一个变量</span></span><br><span class="line">    <span class="built_in">window</span>.target = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// 2-3. data[this.expr]触发了color的get</span></span><br><span class="line">    <span class="keyword">const</span> value = data[<span class="keyword">this</span>.expr];</span><br><span class="line">    <span class="built_in">window</span>.target = <span class="literal">undefined</span>;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  update() &#123;</span><br><span class="line">    <span class="keyword">this</span>.value = <span class="keyword">this</span>.get();</span><br><span class="line">    <span class="keyword">this</span>.cb(<span class="keyword">this</span>.value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们来走一次步骤。<br>现在我们要把文章开头的例子简易的跑一次..<br>括号里面的1-1，2-2是对应代码的执行点。</p>
+<h5 id="1-把数据变成响应式"><a href="#1-把数据变成响应式" class="headerlink" title="1. 把数据变成响应式"></a>1. 把数据变成响应式</h5><p>利用<code>defineReactive</code>把color数据变成响应式（1-1），执行过这个方法后，我们调用<code>console.log(this.color)</code>的时候可以触发get方法。同理当我们<code>this.color = &#39;yellow&#39;</code>。</p>
+<p>注意：在<code>Object.defineProperty</code>上面初始化一个存放依赖的<strong>dep</strong>，这里其实是把<strong>dep</strong>作为数据<code>color</code>的一个<strong>私有变量</strong>，让get和set的方法可以访问到，也是我们经常说的闭包。</p>
+<h5 id="2-编译模板创建watcher"><a href="#2-编译模板创建watcher" class="headerlink" title="2. 编译模板创建watcher"></a>2. 编译模板创建watcher</h5><p>假设我们现在编译模板遇到<code></code>。<br>Vue就会创建一个Watchter，伪代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Watcher(<span class="string">'color'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 当color发生变化的时候，会触发这里的方法。</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>这里高能！！</strong></p>
+<p>Watcher的构造函数里面调用了<code>get()</code>方法（2-2），把自己(watcher)赋值给了一个<strong>外部变量</strong>。</p>
+<p>然后再触发get方法（2-3）。</p>
+<h5 id="3-get中收集依赖"><a href="#3-get中收集依赖" class="headerlink" title="3. get中收集依赖"></a>3. get中收集依赖</h5><p>因为模板编译watcher访问到了color，从而触发get方法，触发了收集依赖的方法。</p>
+<p>进入到<code>dep.depend</code>方法中（3-1），<strong>这里因为在Watcher中把自己存到了外部变量中，所以在dep.depend方法中可以收集到依赖</strong>。</p>
+<p>现在，依赖就被收集了。</p>
+<h5 id="4-通过setter触发依赖"><a href="#4-通过setter触发依赖" class="headerlink" title="4. 通过setter触发依赖"></a>4. 通过setter触发依赖</h5><p>假设我们通过 <code>this.color = &#39;yellow&#39;;</code>去更改<code>color</code>的值，就会触发set方法，执行dep.notify（4-1）。</p>
+<p>会遍历依赖数组，从而去触发Watcher的cb方法。 cb就是上面伪代码<code>new Watcher</code>的那个回调函数。</p>
+<p>只要回调函数里面运行了操作dom方法，或者触发了diff算法更新dom，都可以把视图进行更新。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Vue响应式的灵魂：<strong>在getter中收集依赖，在setter中触发依赖</strong>。</p>
+<p><img src="/imgs/reactive.png" alt="reactive"></p>
+<p>我们再看看图，回顾一下整个流程。</p>
+<ul>
+<li>通过<code>defineReactive</code>，遍历data里面的属性，把数据的getter/setter劫持，用来收集和触发依赖。</li>
+<li>当外界通过Watcher读取数据时，会触发getter从而将Watcher添加到Dep依赖中。</li>
+<li>当数据发生变化时，会触发setter，从而Dep会向依赖（Wachter）发送通知。</li>
+<li>Watcher收到通知后，会向外界发送通知，变化通知到外界后可能接触视图更新，也有可能触发用户的某个回调函数等等。</li>
+</ul>
+<h2 id="侦测数据变化的类型"><a href="#侦测数据变化的类型" class="headerlink" title="侦测数据变化的类型"></a>侦测数据变化的类型</h2><p>其实数据监听变化有两种类型，一种是“<strong>推</strong>”(push)，另一种是“<strong>拉</strong>”(pull)。</p>
+<p>React和Angular中的变化侦测都属于“拉”，就是说在数据发生变化的时候，它不知道哪个数据变了，然后会发送一个信号给框架，框架收到信号后，会进行一个暴力比对来找出那些dom节点需要重新渲染。Angular中使用的是脏检查，在React使用虚拟dom的diff。</p>
+<p>vue的数据监听属于“推”。当数据发生变化时，就知道哪个数据发生变化了，从而去更新有此数据依赖的视图。</p>
+<p>因此，框架知道的数据更新信息越多，也就可以进行更细粒度的更新。比如，直接通过dom api操作dom。</p>
+<p>相对“拉”的力度是最粗的。看到这里，是不是觉得vue的更新效率最快。</p>
+<p>我们看看下面的例子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123;a&#125;&#125;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;&#123;&#123;b&#125;&#125;&lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这里我们看出模板只有a、b两个数据依赖，也就是说我们要创建两个闭包dep去存放两个watcher依赖，我们知道闭包的缺点就是内存泄露。如果有1000个数据依赖在模板上，每个数据所绑定的依赖就越多，依赖追踪在内存上的开销就会越大。</p>
+<p>所以，从Vue.js2.0开始，它引入了虚拟dom，一个状态所绑定的依赖不再是具体的dom节点，而是一个<strong>组件</strong>，即一个组件一个Watcher。 这样状态变化后，会通知到组件，组件内部再使用虚拟 dom进行比对。这可以大大降低依赖数量，从而降低依赖追踪所消耗的内存。但并不是引入虚拟dom后，渲染速度变快了。准确的来说，应该是<strong>80%的场景下变得更快了，而剩下的20%反而变慢了</strong>。</p>
+<p>个人觉得，鱼和熊掌不可兼得。<br>“推”是牺牲内存来换更新速度。<br>“拉”则是牺牲更新速度来获取内存。</p>
+<hr>
+<p>参考文献：《深入浅出Vue.js》</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/面试攻略/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1379,7 +1588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1401,7 +1610,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
